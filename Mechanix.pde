@@ -3,28 +3,25 @@ PImage backgroundImage;
 Board board = new Board();
 
 GUI_component[] GUI = new GUI_component[]{
-  new ScoreBoard(),
+  new ScoreBoard(), 
   board
 };
 
-void setup(){
+void setup() {
   size(1200, 800);
   backgroundImage = loadImage("gear.png");
-  
 }
 
-void draw(){
-  
+void draw() {
+
   // background
   background(backgroundImage);
-  
-  for(GUI_component gui : GUI)
+
+  for (GUI_component gui : GUI)
     gui.Show();
-  
-  
-  
 }
 
-void mousePressed(){
-  
+void mousePressed() {
+  for (GUI_component gui : GUI)
+    gui.onClick(mouseX, mouseY);
 }
