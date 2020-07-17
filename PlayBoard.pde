@@ -15,7 +15,7 @@ public class Board extends GUI_component {
     int middleX = x + w/2;
     // creating all the gears
     for (int i = 0; i < 10; i++) {
-      int y_level = y + 65 + distance*i;
+      int y_level = y + 68 + distance*i;
       if (i % 2 == 0) {
         int lefts = (i+1) / 2;
         int x_level = middleX - distance*lefts;
@@ -65,7 +65,6 @@ public class Board extends GUI_component {
     for (Gear g : gears){
       double d = dist(g.x, g.y, mouseX, mouseY);
       if (d < g.size/2){
-        print(g.id);
         g.player = currentPlayer;
         currentPlayer = currentPlayer != 1 ? 1 : 2;
         return;
@@ -81,7 +80,7 @@ public class Gear {
   int id;
   int x, y;
   int column, row;
-  int size = 55;
+  int size = 68;
   int player = 0;
 
   public Gear(int _id, int _x, int _y) {
@@ -95,21 +94,21 @@ public class Gear {
     switch(player) {
     case 1:
       fill(255, 0, 0);
-      ellipse(x, y, size, size);
+      DrawHexagon(x, y, size);
       break;
 
     case 2:
       fill(0, 0, 255);
-      ellipse(x, y, size, size);
+      DrawHexagon(x, y, size);
       break;
 
     case 3:
       fill(200, 200, 50);
-      ellipse(x, y, size, size);
+      DrawHexagon(x, y, size);
     }
 
 
     fill(0);
-    ellipse(x, y, size*0.4, size*0.4);
+    DrawHexagon(x, y, size*0.4);
   }
 }
