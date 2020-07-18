@@ -5,6 +5,7 @@ public class Board extends GUI_component {
   int distance = 70;
   int amount_of_gears = 0;
   int currentPlayer = 1;
+  Gear selectedGear;
 
   public Board() {
     x = 250;
@@ -37,12 +38,13 @@ public class Board extends GUI_component {
 
     // Coloring the corners
     gears[0].player = 3;
+    gears[0].isCore = true;
     gears[45].player = 2;
+    gears[45].isCore = true;
     gears[54].player = 1;
-    
-    
+    gears[54].isCore = true;
   }
-  
+
 
   public void Show() {
     // background
@@ -72,84 +74,51 @@ public class Board extends GUI_component {
   }
 
   public void onClick(int mouseX, int mouseY) {
-    for (Gear g : gears){
+    for (Gear g : gears) {
       double d = dist(g.x, g.y, mouseX, mouseY);
-      if (d < g.size/2){
-        g.player = currentPlayer;
-        currentPlayer = currentPlayer != 1 ? 1 : 2;
+      if (d < g.size/2) {
+        
+        if(g.isCore)
+          return;
+        
+        if (selectedGear == null) {
+          // Place new gear at location if no other gear is selected
+          if (g.player == 0) {
+            g.player = currentPlayer;
+            currentPlayer = currentPlayer != 1 ? 1 : 2;
+          } else if (g.player == currentPlayer) {
+            
+            g.selected = true;
+            selectedGear = g;
+          }
+        } else {
+          if (g.player == 0) {
+            selectedGear.player = 0;
+            selectedGear.selected = false;
+            selectedGear = null;
+            g.player = currentPlayer;
+            currentPlayer = currentPlayer != 1 ? 1 : 2;
+          }else if(g.selected){ // If the to be selected gear gets selected again
+              g.selected = false;
+              selectedGear = null;
+              return;
+            }
+        }
+
         return;
       }
     }
-      
   }
-  
-  public int[] GetAmount(){
+
+  public int[] GetAmount() {
     int[] result = new int[2];
-    for (Gear g : gears){
+    for (Gear g : gears) {
       if (g.player == 1)
         result[0]++;
       else if (g.player == 2)
         result[1]++;
     }
-    
+
     return result;
-  }
-}
-
-public class Gear {
-
-  Gear tl, tr, r, br, bl, l;
-  int id;
-  int x, y;
-  int column, row;
-  int size = 68;
-  int player = 0;
-  int angle = 0;
-  String rotating = "l";
-  public Gear(int _id, int _x, int _y, int _column, int _row) {
-    id = _id - 1;
-    x = _x;
-    y = _y;
-    column = _column;
-    row = _row;
-  }
-
-  public void Show() {
-    // Drawing the hexagon at an angle
-    push();
-      if(rotating == "r"){
-        angle++;
-      }else if (rotating == "l"){
-        angle--;
-      }else{
-        angle = 0;
-      }
-      translate(x,y);
-      rotate(radians(angle));
-      
-      
-      switch(player) {
-      case 1:
-        fill(255, 0, 0);
-        DrawHexagon(0, 0, size);
-        break;
-  
-      case 2:
-        fill(0, 0, 255);
-        DrawHexagon(0, 0, size);
-        break;
-  
-      case 3:
-        fill(200, 200, 50);
-        DrawHexagon(0, 0, size);
-      }
-      fill(0);
-      DrawHexagon(0, 0, size*0.4);
-    pop();
-    
-    // Text to see info about each gear
-    //fill(255, 0, 255);
-    //text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
-    
   }
 }
