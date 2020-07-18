@@ -40,9 +40,9 @@ public class Board extends GUI_component {
     gears[45].player = 2;
     gears[54].player = 1;
     
-    // referencing each other
     
   }
+  
 
   public void Show() {
     // background
@@ -81,6 +81,18 @@ public class Board extends GUI_component {
       }
     }
       
+  }
+  
+  public int[] GetAmount(){
+    int[] result = new int[2];
+    for (Gear g : gears){
+      if (g.player == 1)
+        result[0]++;
+      else if (g.player == 2)
+        result[1]++;
+    }
+    
+    return result;
   }
 }
 
@@ -135,11 +147,9 @@ public class Gear {
       DrawHexagon(0, 0, size*0.4);
     pop();
     
-    fill(255, 0, 255);
-    text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
-    
-
-
+    // Text to see info about each gear
+    //fill(255, 0, 255);
+    //text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
     
   }
 }

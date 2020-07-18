@@ -3,7 +3,7 @@ PImage backgroundImage;
 Board board = new Board();
 
 GUI_component[] GUI = new GUI_component[]{
-  new ScoreBoard(), 
+  new ScoreBoard(board), 
   board
 };
 

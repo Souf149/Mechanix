@@ -10,5 +10,10 @@ public void DrawHexagon(float x, float y, float size){
               * Math.sin(i * 2 * Math.PI / 6));
       vertex(xval, yval);
   }
+  float xval = (int) (x + size/2
+              * Math.cos(0));
+  float yval = (int) (y + size/2
+          * Math.sin(0));
+  vertex(xval, yval);
   endShape();
 };
