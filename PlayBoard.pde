@@ -21,7 +21,7 @@ public class Board extends GUI_component {
         int x_level = middleX - distance*lefts;
 
         for (int j = 0; j <= i; j++) {
-          gears[amount_of_gears++] = new Gear(amount_of_gears, x_level, y_level);
+          gears[amount_of_gears++] = new Gear(amount_of_gears, x_level, y_level, j, i);
           x_level += distance;
         }
       } else {
@@ -29,7 +29,7 @@ public class Board extends GUI_component {
         int x_level = middleX - distance*amount/2 + distance/2;
 
         for (int j = 0; j <= i; j++) {
-          gears[amount_of_gears++] = new Gear(amount_of_gears, x_level, y_level);
+          gears[amount_of_gears++] = new Gear(amount_of_gears, x_level, y_level, j, i);
           x_level += distance;
         }
       }
@@ -39,6 +39,8 @@ public class Board extends GUI_component {
     gears[0].player = 3;
     gears[45].player = 2;
     gears[54].player = 1;
+    
+    // referencing each other
     
   }
 
@@ -51,9 +53,17 @@ public class Board extends GUI_component {
     // triangle background
     int middleX = x + w/2;
     fill(51);
-    triangle(middleX, y + 10, 
-      x + 10, y + h - 10, 
-      x+w - 10, y + h - 10);
+    beginShape();
+    // TOP
+    vertex(middleX - 20, y + 10);
+    vertex(middleX + 20, y + 10);
+    // RIGHT
+    vertex(x+w - 80, y + h - 50);
+    vertex(x+w - 80, y + h - 10);
+    // LEFT
+    vertex(x + 80, y + h - 10);
+    vertex(x + 80, y + h - 50);
+    endShape();
 
 
     // gears
@@ -82,33 +92,54 @@ public class Gear {
   int column, row;
   int size = 68;
   int player = 0;
-
-  public Gear(int _id, int _x, int _y) {
+  int angle = 0;
+  String rotating = "l";
+  public Gear(int _id, int _x, int _y, int _column, int _row) {
     id = _id - 1;
     x = _x;
     y = _y;
+    column = _column;
+    row = _row;
   }
 
   public void Show() {
+    // Drawing the hexagon at an angle
+    push();
+      if(rotating == "r"){
+        angle++;
+      }else if (rotating == "l"){
+        angle--;
+      }else{
+        angle = 0;
+      }
+      translate(x,y);
+      rotate(radians(angle));
+      
+      
+      switch(player) {
+      case 1:
+        fill(255, 0, 0);
+        DrawHexagon(0, 0, size);
+        break;
+  
+      case 2:
+        fill(0, 0, 255);
+        DrawHexagon(0, 0, size);
+        break;
+  
+      case 3:
+        fill(200, 200, 50);
+        DrawHexagon(0, 0, size);
+      }
+      fill(0);
+      DrawHexagon(0, 0, size*0.4);
+    pop();
+    
+    fill(255, 0, 255);
+    text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
+    
 
-    switch(player) {
-    case 1:
-      fill(255, 0, 0);
-      DrawHexagon(x, y, size);
-      break;
 
-    case 2:
-      fill(0, 0, 255);
-      DrawHexagon(x, y, size);
-      break;
-
-    case 3:
-      fill(200, 200, 50);
-      DrawHexagon(x, y, size);
-    }
-
-
-    fill(0);
-    DrawHexagon(x, y, size*0.4);
+    
   }
 }
