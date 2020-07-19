@@ -9,7 +9,7 @@ GUI_component[] GUI = new GUI_component[]{
 
 void setup() {
   size(1200, 800);
-  backgroundImage = loadImage("gear.png");
+  backgroundImage = loadImage("data/gear.png");
 }
 
 void draw() {
