@@ -1,5 +1,4 @@
  //<>//
-
 public class Board extends GUI_component {
   Gear[] gears = new Gear[55];
   int distance = 70;
@@ -49,12 +48,15 @@ public class Board extends GUI_component {
   public void Show() {
     // background
     strokeWeight(0.5);
-    fill(150, 50, 150);
-    rect(x, y, w, h, 7);
+    fill(150, 50, 150, 100);
+    //rect(x, y, w, h, 25);
 
     // triangle background
     int middleX = x + w/2;
     fill(51);
+    strokeWeight(5);
+
+
     beginShape();
     // TOP
     vertex(middleX - 20, y + 10);
@@ -65,6 +67,8 @@ public class Board extends GUI_component {
     // LEFT
     vertex(x + 80, y + h - 10);
     vertex(x + 80, y + h - 50);
+
+    vertex(middleX - 20, y + 10);
     endShape();
 
 
@@ -77,17 +81,17 @@ public class Board extends GUI_component {
     for (Gear g : gears) {
       double d = dist(g.x, g.y, mouseX, mouseY);
       if (d < g.size/2) {
-        
-        if(g.isCore)
+
+        if (g.isCore)
           return;
-        
+
         if (selectedGear == null) {
           // Place new gear at location if no other gear is selected
           if (g.player == 0) {
             g.player = currentPlayer;
             currentPlayer = currentPlayer != 1 ? 1 : 2;
           } else if (g.player == currentPlayer) {
-            
+
             g.selected = true;
             selectedGear = g;
           }
@@ -98,11 +102,11 @@ public class Board extends GUI_component {
             selectedGear = null;
             g.player = currentPlayer;
             currentPlayer = currentPlayer != 1 ? 1 : 2;
-          }else if(g.selected){ // If the to be selected gear gets selected again
-              g.selected = false;
-              selectedGear = null;
-              return;
-            }
+          } else if (g.selected) { // If the to be selected gear gets selected again
+            g.selected = false;
+            selectedGear = null;
+            return;
+          }
         }
 
         return;
