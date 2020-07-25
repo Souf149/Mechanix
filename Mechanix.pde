@@ -22,6 +22,7 @@ void draw() {
 }
 
 void mousePressed() {
-  for (GUI_component gui : GUI)
-    gui.onClick(mouseX, mouseY);
+  //for (GUI_component gui : GUI)
+  //  gui.onClick(mouseX, mouseY);
+  print(board.onClick(mouseX, mouseY));
 }

@@ -12,6 +12,7 @@ public abstract class GUI_component {
   public void Show() {
   }
 
-  public void onClick(int mouseX, int mouseY) {
+  public boolean onClick(int mouseX, int mouseY) {
+    return false;
   }
 }

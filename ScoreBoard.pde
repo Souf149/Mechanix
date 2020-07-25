@@ -41,7 +41,4 @@ public class ScoreBoard extends GUI_component {
 
     timer+=1;
   }
-
-  public void onClick(int mouseX, int mouseY) {
-  }
 }

@@ -9,7 +9,7 @@ public class Gear {
   int size = 68;
   int player = 0;
   int angle = 0;
-  String rotating = "r";
+  String rotating = "";
   boolean selected = false;
   boolean isCore = false;
 

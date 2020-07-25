@@ -76,14 +76,15 @@ public class Board extends GUI_component {
     for (Gear g : gears)
       g.Show();
   }
-
-  public void onClick(int mouseX, int mouseY) {
+  
+  // Returns whether the game has to test for rotatable gears
+  public boolean onClick(int mouseX, int mouseY) {
     for (Gear g : gears) {
       double d = dist(g.x, g.y, mouseX, mouseY);
       if (d < g.size/2) {
-
+        
         if (g.isCore)
-          return;
+          return false;
 
         if (selectedGear == null) {
           // Place new gear at location if no other gear is selected
@@ -105,13 +106,13 @@ public class Board extends GUI_component {
           } else if (g.selected) { // If the to be selected gear gets selected again
             g.selected = false;
             selectedGear = null;
-            return;
+            return false;
           }
         }
-
-        return;
+        return true; //<>//
       }
     }
+    return false;
   }
 
   public int[] GetAmount() {
