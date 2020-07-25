@@ -80,39 +80,45 @@ public class Board extends GUI_component {
   // Returns whether the game has to test for rotatable gears
   public boolean onClick(int mouseX, int mouseY) {
     for (Gear g : gears) {
-      double d = dist(g.x, g.y, mouseX, mouseY);
-      if (d < g.size/2) {
+      // Only do something when a gear is clicked
+      if (dist(g.x, g.y, mouseX, mouseY) < g.size/2) {
         
-        if (g.isCore)
+        // if the gear is one of the corners stop the onclick
+        if(g.isCore)
           return false;
-
-        if (selectedGear == null) {
-          // Place new gear at location if no other gear is selected
+        
+        // if there was no previously selected gear place a new one
+        if(selectedGear == null){
+          // if the clicked gear hasnt been claimed yet set it to currentPlayer
           if (g.player == 0) {
             g.player = currentPlayer;
-            currentPlayer = currentPlayer != 1 ? 1 : 2;
+            NextPlayer();
           } else if (g.player == currentPlayer) {
-
+            // if the gear is the same as this player. Select the gear to move it next click
             g.selected = true;
             selectedGear = g;
           }
+        
+        // If another gear has been selected before move the selected gear to the new spot or cancel the selection
         } else {
           if (g.player == 0) {
             selectedGear.player = 0;
             selectedGear.selected = false;
             selectedGear = null;
             g.player = currentPlayer;
-            currentPlayer = currentPlayer != 1 ? 1 : 2;
+            NextPlayer();
           } else if (g.selected) { // If the to be selected gear gets selected again
             g.selected = false;
             selectedGear = null;
             return false;
           }
         }
-        return true; //<>//
       }
     }
-    return false;
+    
+    // if everything went well return true
+    return true; //<>//
+    
   }
 
   public int[] GetAmount() {
@@ -125,5 +131,9 @@ public class Board extends GUI_component {
     }
 
     return result;
+  }
+  
+  public void NextPlayer(){
+    currentPlayer = currentPlayer != 1 ? 1 : 2;
   }
 }
