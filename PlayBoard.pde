@@ -1,4 +1,4 @@
- //<>//
+//<>// //<>//
 public class Board extends GUI_component {
   Gear[] gears = new Gear[55];
   int distance = 70;
@@ -76,30 +76,31 @@ public class Board extends GUI_component {
     for (Gear g : gears)
       g.Show();
   }
-  
+
   // Returns whether the game has to test for rotatable gears
   public boolean onClick(int mouseX, int mouseY) {
     for (Gear g : gears) {
       // Only do something when a gear is clicked
       if (dist(g.x, g.y, mouseX, mouseY) < g.size/2) {
-        
+
         // if the gear is one of the corners stop the onclick
-        if(g.isCore)
+        if (g.isCore)
           return false;
-        
+
         // if there was no previously selected gear place a new one
-        if(selectedGear == null){
+        if (selectedGear == null) {
           // if the clicked gear hasnt been claimed yet set it to currentPlayer
           if (g.player == 0) {
             g.player = currentPlayer;
+            CheckGears(new int[1], g);
             NextPlayer();
           } else if (g.player == currentPlayer) {
             // if the gear is the same as this player. Select the gear to move it next click
             g.selected = true;
             selectedGear = g;
           }
-        
-        // If another gear has been selected before move the selected gear to the new spot or cancel the selection
+
+          // If another gear has been selected before move the selected gear to the new spot or cancel the selection
         } else {
           if (g.player == 0) {
             selectedGear.player = 0;
@@ -115,10 +116,33 @@ public class Board extends GUI_component {
         }
       }
     }
-    
+
     // if everything went well return true
-    return true; //<>//
-    
+    return true;
+  }
+
+  public boolean CheckGears(int[] visitedGears, Gear currentGear) {
+
+    // Check every neighbour of the current gear
+    GetRightGear(currentGear);
+    return true;
+  }
+
+  public Gear GetRightGear(Gear g) {
+    // Get potential right gear
+    int potentialIndex = g.id + 1;
+
+    // Check if index is out of range
+    if (potentialIndex >= gears.length)
+      return null;
+    Gear potentialGear = gears[potentialIndex];
+
+    // Check if it is not null
+    if (g.row == potentialGear.row)
+      return potentialGear;
+
+
+    return null;
   }
 
   public int[] GetAmount() {
@@ -132,8 +156,8 @@ public class Board extends GUI_component {
 
     return result;
   }
-  
-  public void NextPlayer(){
+
+  public void NextPlayer() {
     currentPlayer = currentPlayer != 1 ? 1 : 2;
   }
 }

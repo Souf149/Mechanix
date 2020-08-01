@@ -67,8 +67,8 @@ public class Gear {
     pop();
 
     // Text to see info about each gear
-    //textSize(11);
-    //fill(255, 0, 255);
-    //text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
+    textSize(11);
+    fill(255, 0, 255);
+    text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
   }
 }
