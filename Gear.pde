@@ -71,4 +71,12 @@ public class Gear {
     fill(255, 0, 255);
     text(Integer.toString(id) + ": \n" + Integer.toString(column) + " ; " + Integer.toString(row), x, y);
   }
+  
+  public void SetRotation(String r){
+    rotating = r;
+  }
+
+  public String toString() { 
+    return "Id: '" + this.id + "', Column: '" + this.column + "', Row: '" + this.row + "'" + "', Player: '" + this.player;
+  }
 }

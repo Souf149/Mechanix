@@ -1,10 +1,10 @@
-//<>// //<>//
-public class Board extends GUI_component {
+public class Board extends GUI_component { //<>// //<>//
   Gear[] gears = new Gear[55];
   int distance = 70;
   int amount_of_gears = 0;
   int currentPlayer = 1;
   Gear selectedGear;
+  Gear[] coreGears = new Gear[2];
 
   public Board() {
     x = 250;
@@ -35,13 +35,16 @@ public class Board extends GUI_component {
       }
     }
 
-    // Coloring the corners
+    // Coloring the cores and setting the variables
     gears[0].player = 3;
     gears[0].isCore = true;
     gears[45].player = 2;
     gears[45].isCore = true;
     gears[54].player = 1;
     gears[54].isCore = true;
+    coreGears[0] = gears[45];
+    coreGears[1] = gears[54];
+    
   }
 
 
@@ -124,26 +127,106 @@ public class Board extends GUI_component {
   public boolean CheckGears(int[] visitedGears, Gear currentGear) {
 
     // Check every neighbour of the current gear
-    GetRightGear(currentGear);
+    // same row
+    Gear l = GetLeftGear(currentGear);
+    Gear r = GetRightGear(currentGear);
+
+    // upper row
+    Gear tl = GetTopLeftGear(currentGear);
+    Gear tr = GetTopRightGear(currentGear);
+
+    // lower row
+    Gear bl = GetBottomLeftGear(currentGear);
+    Gear br = GetBottomRightGear(currentGear);
+    
+    // Check if left core is stuck
+    coreGears[0].SetRotation("r");
+    
+    // Check if right core is stuck
+    coreGears[1].SetRotation("l");
+    
+    
+
     return true;
   }
 
   public Gear GetRightGear(Gear g) {
-    // Get potential right gear
+    // Get potential gear's index
     int potentialIndex = g.id + 1;
-
     // Check if index is out of range
-    if (potentialIndex >= gears.length)
+    if (potentialIndex < 0 || potentialIndex >= gears.length)
       return null;
     Gear potentialGear = gears[potentialIndex];
-
     // Check if it is not null
     if (g.row == potentialGear.row)
       return potentialGear;
-
-
     return null;
   }
+
+  public Gear GetLeftGear(Gear g) {
+    // Get potential gear's index
+    int potentialIndex = g.id - 1;
+    // Check if index is out of range
+    // Check if index is out of range
+    if (potentialIndex < 0 || potentialIndex >= gears.length)
+      return null;
+    Gear potentialGear = gears[potentialIndex];
+    // Check if it is on the same row
+    if (g.row == potentialGear.row)
+      return potentialGear;
+    return null;
+  }
+
+  public Gear GetTopRightGear(Gear g) {
+    // Get potential gear's index
+    int potentialIndex = g.id - g.row;
+    // Check if index is out of range
+    if (potentialIndex < 0 || potentialIndex >= gears.length)
+      return null;
+    Gear potentialGear = gears[potentialIndex];
+    // Check if it is on the above row
+    if (g.row == potentialGear.row + 1)
+      return potentialGear;
+    return null;
+  }
+
+  public Gear GetTopLeftGear(Gear g) {
+    // Get potential gear's index
+    int potentialIndex = g.id - g.row - 1;
+    // Check if index is out of range
+    if (potentialIndex < 0 || potentialIndex >= gears.length)
+      return null;
+    Gear potentialGear = gears[potentialIndex];
+    // Check if it is on the above row
+    if (g.row == potentialGear.row + 1)
+      return potentialGear;
+    return null;
+  }
+  public Gear GetBottomLeftGear(Gear g) {
+    // Get potential gear's index
+    int potentialIndex = g.id + g.row + 1;
+    // Check if index is out of range
+    if (potentialIndex < 0 || potentialIndex >= gears.length)
+      return null;
+    Gear potentialGear = gears[potentialIndex];
+    // Check if it is on the below row
+    if (g.row == potentialGear.row - 1)
+      return potentialGear;
+    return null;
+  }
+  public Gear GetBottomRightGear(Gear g) {
+    // Get potential gear's index
+    int potentialIndex = g.id + g.row + 2;
+    // Check if index is out of range
+    if (potentialIndex < 0 || potentialIndex >= gears.length)
+      return null;
+    Gear potentialGear = gears[potentialIndex];
+    // Check if it is on the below row
+    if (g.row == potentialGear.row - 1)
+      return potentialGear;
+    return null;
+  }
+
 
   public int[] GetAmount() {
     int[] result = new int[2];
