@@ -1,4 +1,6 @@
-public class Board extends GUI_component { //<>// //<>//
+import java.util.*;  //<>// //<>//
+
+public class Board extends GUI_component {
   Gear[] gears = new Gear[55];
   int distance = 70;
   int amount_of_gears = 0;
@@ -44,7 +46,9 @@ public class Board extends GUI_component { //<>// //<>//
     gears[54].isCore = true;
     coreGears[0] = gears[45];
     coreGears[1] = gears[54];
-    
+
+    coreGears[0].rotating = "l";
+    coreGears[1].rotating = "r";
   }
 
 
@@ -95,7 +99,9 @@ public class Board extends GUI_component { //<>// //<>//
           // if the clicked gear hasnt been claimed yet set it to currentPlayer
           if (g.player == 0) {
             g.player = currentPlayer;
-            CheckGears(new int[1], g);
+            CheckGears(new ArrayList<Gear>(), coreGears[0]);
+            CheckGears(new ArrayList<Gear>(), coreGears[1]);
+
             NextPlayer();
           } else if (g.player == currentPlayer) {
             // if the gear is the same as this player. Select the gear to move it next click
@@ -124,29 +130,53 @@ public class Board extends GUI_component { //<>// //<>//
     return true;
   }
 
-  public boolean CheckGears(int[] visitedGears, Gear currentGear) {
+  public boolean CheckGears(ArrayList<Gear> visitedGears, Gear currentGear) {
+
+    // If currentGear has already been visited check if there is no error. Returns true when no problem has occured.
+    //print("COUNT: " + visitedGears.size());
+    for (Gear g : visitedGears) 
+      if (g.id == currentGear.id)
+        if (g.rotating != currentGear.rotating)
+          print("ERROR");
+
+    // list of all neighbours
+    ArrayList<Gear> surrounding_gears = new ArrayList<Gear>();
+
 
     // Check every neighbour of the current gear
     // same row
     Gear l = GetLeftGear(currentGear);
     Gear r = GetRightGear(currentGear);
+    if (l != null && l.player != 0)
+      surrounding_gears.add(l);
+    if (r != null && r.player != 0)
+      surrounding_gears.add(r);
 
     // upper row
     Gear tl = GetTopLeftGear(currentGear);
     Gear tr = GetTopRightGear(currentGear);
+    if (tl != null && tl.player != 0)
+      surrounding_gears.add(tl);
+    if (tr != null && tr.player != 0)
+      surrounding_gears.add(tr);
 
     // lower row
     Gear bl = GetBottomLeftGear(currentGear);
     Gear br = GetBottomRightGear(currentGear);
-    
-    // Check if left core is stuck
-    coreGears[0].SetRotation("r");
-    
-    // Check if right core is stuck
-    coreGears[1].SetRotation("l");
-    
-    
+    if (bl != null && bl.player != 0)
+      surrounding_gears.add(bl);
+    if (br != null && br.player != 0)
+      surrounding_gears.add(br);
 
+    // Set all rotating of neighbours to opposite of currentGear
+    for (int i = 0; i < surrounding_gears.size(); i++) {
+      surrounding_gears.get(i).rotating = currentGear.rotating == "l" ? "r" : "l";
+    }
+    
+    visitedGears.add(currentGear);
+    for (Gear g : surrounding_gears)
+      CheckGears(visitedGears, g);
+      
     return true;
   }
 
